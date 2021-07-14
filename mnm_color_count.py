@@ -40,3 +40,18 @@ count_mnm_df.show(n=60, truncate=False)
 with open ("/home/jaanhunzai_512/spark_projects/data/mnm_result.txt", "w") as f:
     f.write(f'number of LINES: {count_mnm_df.count()}\n')
     f.write(f'number of counts for each state: {count_mnm_df.head(count_mnm_df.count())}\n')
+
+
+from pyspark.sql.functions import avg
+"""
+high-level DSL operators (domain specific language)
+- are used to reduce complexity and performs operations as a single query
+"""
+spark_sdl =(SparkSession
+            .builder
+            .appName("spark_DSL_operators")
+            .getOrCreate())
+sdl_df = spark.createDataFrame([("Jan", "40"),("Khan","60"),("Jan","42"),("Ali","89")],["name","age"])
+avg_df = sdl_df.groupby("name").agg(avg("age"))
+
+avg_df.show()
